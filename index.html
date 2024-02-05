@@ -10,6 +10,7 @@
     <link rel="preload" href="fonts/exo2-regular.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="fonts/exo2-semibold.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="fonts/exo2-bold.woff2" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="leaflet/leaflet.css"/>
     <link rel="stylesheet" href="css/style.min.css">
 </head>
 
@@ -190,9 +191,9 @@
                             data-delay="300">
                             <div class="tabs__controls" data-tabs="controls">
                                 <!-- При переключении с продавцов на покупателей и обратно нужно выделить активный пункт .is-active -->
-                                <button class="tabs__control tabs__control-sellers btn is-active" type="button"
+                                <button class="tabs__control tabs__control--sellers btn is-active" type="button"
                                     data-tabs="control">Купить</button>
-                                <button class="tabs__control tabs__control-buyers btn" type="button" data-tabs="control">Продать</button>
+                                <button class="tabs__control tabs__control--buyers btn" type="button" data-tabs="control">Продать</button>
                             </div>
                         </div>
                     </div>
@@ -208,9 +209,9 @@
                             data-delay="300">
                             <!-- При переключении с карты на список и обратно нужно выделить активный пункт .is-active -->
                             <div class="tabs__controls" data-tabs="controls">
-                                <button class="tabs__control btn is-active" type="button"
+                                <button class="tabs__control tabs__control--list btn is-active" type="button"
                                     data-tabs="control">Cписок</button>
-                                <button class="tabs__control btn" type="button" data-tabs="control">Карта</button>
+                                <button class="tabs__control tabs__control--map btn" type="button" data-tabs="control">Карта</button>
                             </div>
                         </div>
                     </div>
@@ -252,8 +253,8 @@
             </div>
 
             <!-- При переключении на карту нужно отобразить данный контейнер -->
-            <div class="container" style="display: none">
-                <div class="map">
+            <div class="container container--map" hidden>
+                <div class="map" id="map" style="width: 1360px; height: 684px;">
                     <!--
                         Карту нужно отрисовать в этот контейнер. Иконки для карты -
                         img/pin.svg и img/pin-verified.svg для обычных пользователей
@@ -593,14 +594,14 @@
                 <svg width="20" height="20" aria-hidden="true">
                     <use xlink:href="#icon-star"></use>
                 </svg>
-                <span>Неопознанный енот</span>
+                <span style="min-width: 120px;">Неопознанный енот</span>
             </span>
             <p class="user-card__cash-item"><span class="user-card__cash-label">Валюта</span><span
-                    class="user-card__cash-data">KEKS</span></p>
+                    class="user-card__cash-data user-card__cash-data-currency">KEKS</span></p>
             <p class="user-card__cash-item"><span class="user-card__cash-label">Курс</span><span
-                    class="user-card__cash-data">9 999 999 ₽</span></p>
+                    class="user-card__cash-data user-card__cash-data-exchangerate">9 999 999 ₽</span></p>
             <p class="user-card__cash-item"><span class="user-card__cash-label">Лимит</span><span
-                    class="user-card__cash-data">9 900 ₽ – 9 900 000 000 ₽</span></p>
+                    class="user-card__cash-data-cashlimit">9 900 ₽ – 9 900 000 000 ₽</span></p>
             <ul class="user-card__badges-list">
                 <li class="user-card__badges-item badge">BitTransfer</li>
                 <li class="user-card__badges-item badge">CryptoEx</li>
@@ -611,6 +612,7 @@
         </div>
     </template>
 
+    <script src="leaflet/leaflet.js" defer></script>
     <script src="./js/main.js" type="module"></script>
 
 </body>
