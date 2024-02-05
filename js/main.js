@@ -1,4 +1,4 @@
-import { renderContractors } from './contractors/index.js';
+import { renderContractors } from './contractors-information/index.js';
 import { request } from './api.js';
 
 const BASE_URL = 'https://cryptostar.grading.htmlacademy.pro/';

@@ -3,8 +3,11 @@ const template = document.querySelector('#user-table-row__template');
 
 const createRows = (contractorsData) => contractorsData.map((properties) => {
   const tableRow = template.content.querySelector('.users-list__table-row').cloneNode(true);
-  const {status, userName, balance, exchangeRate, minAmount, paymentMethods } = properties;
+  const {status, userName, isVerified, balance, exchangeRate, minAmount, paymentMethods } = properties;
   tableRow.querySelector('.users-list__table-name span').textContent = userName;
+  if (!isVerified) {
+    tableRow.querySelector('.users-list__table-name svg').remove();
+  }
   tableRow.querySelector('.users-list__table-currency').textContent = balance.currency;
   tableRow.querySelector('.users-list__table-exchangerate').textContent = `${Math.round(exchangeRate)} ₽`;
 
