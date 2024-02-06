@@ -19,7 +19,7 @@ const switchClass = (fromControl, toControl) => {
 };
 
 const renderContractors = (contractors) => {
-  let sellers = getSellers(contractors);
+  const sellers = getSellers(contractors);
   const buyers = getBuyers(contractors);
   const cashSellers = sellers.filter((seller) => seller.paymentMethods.some((method) => method.provider === 'Cash in person'));
 
@@ -51,7 +51,6 @@ const renderContractors = (contractors) => {
     switchClass(mapControl, listControl);
     usersList.hidden = false;
     closeMap();
-    // renderTable(buyers);
   });
   renderTable(sellers);
 

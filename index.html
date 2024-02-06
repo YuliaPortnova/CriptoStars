@@ -299,7 +299,7 @@
             <div class="modal__content">
                 <h2 class="modal__description">Покупка криптовалюты</h2>
                 <!-- Не забудьте указать верный action-атрибут -->
-                <form class="modal-buy" method="post">
+                <form class="modal-buy modal-form" method="post">
                     <!--
                         Обратите внимание, что всем полям для отправки на сервер нужно указать
                         атрибуты name (их список вы найдёте в техзадании), а часть полей
@@ -314,14 +314,14 @@
                     <div class="transaction-info">
                         <p class="transaction-info__item transaction-info__item--name"><span
                                 class="transaction-info__label">Пользователь</span><span class="transaction-info__data">
-                                <svg width="20" height="20" aria-hidden="true">
+                                <svg class="transaction-info__is-verified" width="20" height="20" aria-hidden="true">
                                     <use xlink:href="#icon-star"></use>
-                                </svg>John Smith</span></p>
+                                </svg><span class="transaction-info__name">John Smith</span></span></p>
                         <p class="transaction-info__item transaction-info__item--exchangerate"><span
-                                class="transaction-info__label">Курс</span><span class="transaction-info__data">9 999
+                                class="transaction-info__label">Курс</span><span class="transaction-info__data transaction-info__exchange-rate">9 999
                                 999&nbsp;₽</span></p>
                         <p class="transaction-info__item transaction-info__item--cashlimit"><span
-                                class="transaction-info__label">Лимит</span><span class="transaction-info__data">9 999
+                                class="transaction-info__label">Лимит</span><span class="transaction-info__data transaction-info__limit">9 999
                                 999&nbsp;₽&nbsp;-&nbsp;9 999 999 000&nbsp;₽</span></p>
                     </div>
                     <div class="modal__container modal__container--small">
@@ -331,7 +331,7 @@
                                         class="custom-input__unit">₽</span>
                                     <button class="btn btn--textblue custom-input__btn" type="button">обменять все
                                     </button>
-                                    <input type="number" value="" placeholder="0">
+                                    <input type="number" value="" placeholder="0" name="sendingAmount">
                                 </label>
                                 <!-- Пример стилизации ошибки валидации -->
                                 <div class="custom-input__error">Минимальная сумма — 9 999 999 ₽</div>
@@ -344,7 +344,7 @@
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Зачисление</span><span
                                         class="custom-input__unit">KEKS</span>
-                                    <input type="number" placeholder="0">
+                                    <input type="number" placeholder="0" name="receivingAmount">
                                 </label>
                             </div>
                         </div>
@@ -357,7 +357,7 @@
                                     которые есть у пользователя. Способ - удалить из разметки или добавить disable-атрибут
                                     остаётся на ваше усмотрение. Первый пункт, с предложением выбора, должен быть всегда
                                 -->
-                                <select>
+                                <select name="paymentMethod">
                                     <option selected disabled>Выберите платёжную систему</option>
                                     <option>CryptoEx</option>
                                     <option>Первый криптобанк</option>
@@ -384,7 +384,7 @@
                         <div class="modal__input-wrapper modal__input-wrapper--decorated">
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Платёжный пароль</span>
-                                    <input type="password" value="123456" placeholder="Введите пароль">
+                                    <input type="password" name="paymentPassword" value="123456" placeholder="Введите пароль">
                                 </label>
                             </div>
                         </div>
@@ -576,7 +576,7 @@
                 </ul>
             </td>
             <td class="users-list__table-cell users-list__table-btn">
-                <button class="btn btn--greenborder" type="button">Обменять
+                <button class="btn btn--greenborder btn--modal-open" type="button">Обменять
                 </button>
             </td>
         </tr>

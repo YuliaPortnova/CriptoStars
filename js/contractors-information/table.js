@@ -1,9 +1,16 @@
 const container = document.querySelector('.users-list__table-body');
 const template = document.querySelector('#user-table-row__template');
 
+const createContractorClickHandler = (properties) => () => {
+  document.dispatchEvent(new CustomEvent('contractorSelect', {detail: properties}));
+};
+
 const createRows = (contractorsData) => contractorsData.map((properties) => {
   const tableRow = template.content.querySelector('.users-list__table-row').cloneNode(true);
   const {status, userName, isVerified, balance, exchangeRate, minAmount, paymentMethods } = properties;
+
+  const openButton = tableRow.querySelector('.btn--modal-open');
+
   tableRow.querySelector('.users-list__table-name span').textContent = userName;
   if (!isVerified) {
     tableRow.querySelector('.users-list__table-name svg').remove();
@@ -26,7 +33,7 @@ const createRows = (contractorsData) => contractorsData.map((properties) => {
     });
   }
 
-  // thumbnail.addEventListener ('click', createThumbnailClickHandler(properties));
+  openButton.addEventListener ('click', createContractorClickHandler(properties));
   return tableRow;
 });
 
