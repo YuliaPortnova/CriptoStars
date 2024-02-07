@@ -1,5 +1,5 @@
 import { renderTable } from './table.js';
-import { renderMap, closeMap } from './map.js';
+import { renderMap, closeMap, hideNotVerifiedMarkers, showNotVerifiedMarkers } from './map.js';
 
 const sellersControl = document.querySelector('.tabs__control--sellers');
 const buyersControl = document.querySelector('.tabs__control--buyers');
@@ -16,6 +16,35 @@ const getNotVerifiedContractors = (data) => data.filter((contractor) => contract
 const switchClass = (fromControl, toControl) => {
   toControl.classList.add('is-active');
   fromControl.classList.remove('is-active');
+};
+
+const repaintContractors = (sellers, buyers, cashSellers) => {
+  const isVerified = verifiedContractorsToggle.checked;
+  const isList = listControl.classList.contains('is-active');
+  const isMap = mapControl.classList.contains('is-active');
+  const isSellers = sellersControl.classList.contains('is-active');
+  const isBuyers = buyersControl.classList.contains('is-active');
+
+  if (isVerified && isList && isSellers) {
+    renderTable(getVerifiedContractors(sellers));
+  }
+  if (!isVerified && isList && isSellers) {
+    renderTable(sellers);
+  }
+  if (isVerified && isList && isBuyers) {
+    renderTable(getVerifiedContractors(buyers));
+  }
+  if (!isVerified && isList && isBuyers) {
+    renderTable(buyers);
+  }
+
+  if (isVerified && isMap) {
+    hideNotVerifiedMarkers();
+  }
+
+  if (!isVerified && isMap) {
+    showNotVerifiedMarkers(getNotVerifiedContractors(cashSellers));
+  }
 };
 
 const renderContractors = (contractors) => {
@@ -45,29 +74,19 @@ const renderContractors = (contractors) => {
     switchClass(listControl, mapControl);
     usersList.hidden = true;
     renderMap(getVerifiedContractors(cashSellers), getNotVerifiedContractors(cashSellers));
+    repaintContractors(sellers, buyers, cashSellers);
   });
 
   listControl.addEventListener('click', () => {
     switchClass(mapControl, listControl);
     usersList.hidden = false;
     closeMap();
+    repaintContractors(sellers, buyers, cashSellers);
   });
-  renderTable(sellers);
 
-  verifiedContractorsToggle.addEventListener('change', () => {
-    if (verifiedContractorsToggle.checked && listControl.classList.contains('is-active') && sellersControl.classList.contains('is-active')) {
-      renderTable(getVerifiedContractors(sellers));
-    }
-    if (!verifiedContractorsToggle.checked && listControl.classList.contains('is-active') && sellersControl.classList.contains('is-active')) {
-      renderTable(sellers);
-    }
-    if (verifiedContractorsToggle.checked && listControl.classList.contains('is-active') && buyersControl.classList.contains('is-active')) {
-      renderTable(getVerifiedContractors(buyers));
-    }
-    if (!verifiedContractorsToggle.checked && listControl.classList.contains('is-active') && buyersControl.classList.contains('is-active')) {
-      renderTable(buyers);
-    }
-  });
+  verifiedContractorsToggle.addEventListener('change', () => repaintContractors(sellers, buyers, cashSellers));
+
+  renderTable(sellers);
 };
 
 export { renderContractors };

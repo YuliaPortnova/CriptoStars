@@ -95,8 +95,16 @@ const renderMap = (verifiedContractors, notVerifiedContractors) => {
   map.invalidateSize(false);
 };
 
+const hideNotVerifiedMarkers = () => {
+  notVerifiedMarkerGroup.clearLayers();
+};
+
+const showNotVerifiedMarkers = (notVerifiedContractors) => {
+  createNotVerifiedMarkers(notVerifiedContractors);
+};
+
 const closeMap = () => {
   container.style.display = 'none';
 };
 
-export { renderMap, closeMap };
+export { renderMap, closeMap, hideNotVerifiedMarkers, showNotVerifiedMarkers };
