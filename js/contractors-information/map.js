@@ -92,6 +92,7 @@ const renderMap = (verifiedContractors, notVerifiedContractors) => {
 
   createNotVerifiedMarkers(notVerifiedContractors);
   createVerifiedMarkers(verifiedContractors);
+  map.invalidateSize(false);
 };
 
 const closeMap = () => {
