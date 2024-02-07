@@ -7,11 +7,15 @@ const USER_URL = 'user';
 const CONTRACTORS_URL = 'contractors';
 
 try {
-  renderContractors(await request(`${BASE_URL}${CONTRACTORS_URL}`));
-  document.addEventListener('contractorSelect', (event) => {
-    initTransaction(event.detail);
-  });
-} catch {
+  (async () => {
+    const contractorsData = await request(`${BASE_URL}${CONTRACTORS_URL}`);
+    renderContractors(contractorsData);
+    const userData = await request(`${BASE_URL}${USER_URL}`);
+    document.addEventListener('contractorSelect', (event) => {
+      initTransaction(event.detail, userData);
+    });
+  })();
+} catch (error) {
   // renderStatus('data-error', {autoHide: 5000});
   console.log('Ошибка');
 }

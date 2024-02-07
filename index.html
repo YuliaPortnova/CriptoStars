@@ -7,9 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Crypto stars">
-    <link rel="preload" href="fonts/exo2-regular.woff2" as="font" crossorigin="anonymous">
-    <link rel="preload" href="fonts/exo2-semibold.woff2" as="font" crossorigin="anonymous">
-    <link rel="preload" href="fonts/exo2-bold.woff2" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="leaflet/leaflet.css"/>
     <link rel="stylesheet" href="css/style.min.css">
 </head>
@@ -327,14 +324,13 @@
                     <div class="modal__container modal__container--small">
                         <div class="modal__input-wrapper modal__input-wrapper--min">
                             <div class="custom-input">
-                                <label><span class="custom-input__label">Оплата</span><span
-                                        class="custom-input__unit">₽</span>
-                                    <button class="btn btn--textblue custom-input__btn" type="button">обменять все
+                                <label>
+                                    <span class="custom-input__label">Оплата</span>
+                                    <span class="custom-input__unit">₽</span>
+                                    <button class="btn btn--textblue custom-input__btn btn--exchange-all" type="button">обменять все
                                     </button>
                                     <input type="number" value="" placeholder="0" name="sendingAmount">
                                 </label>
-                                <!-- Пример стилизации ошибки валидации -->
-                                <div class="custom-input__error">Минимальная сумма — 9 999 999 ₽</div>
                             </div>
                         </div>
                         <svg class="modal__container-svg" width="14" height="12" aria-hidden="true">
@@ -357,12 +353,11 @@
                                     которые есть у пользователя. Способ - удалить из разметки или добавить disable-атрибут
                                     остаётся на ваше усмотрение. Первый пункт, с предложением выбора, должен быть всегда
                                 -->
-                                <select name="paymentMethod">
+                                <select name="paymentMethod" class="select-paymentMethod">
                                     <option selected disabled>Выберите платёжную систему</option>
-                                    <option>CryptoEx</option>
-                                    <option>Первый криптобанк</option>
-                                    <option>BitTransfer</option>
-                                    <option>BMT Exchange</option>
+                                    <option>Sberbank</option>
+                                    <option>QIWI</option>
+                                    <option>Tinkoff</option>
                                 </select>
                             </div>
                         </div>
@@ -427,7 +422,7 @@
             <div class="modal__content">
                 <h2 class="modal__description">Продажа криптовалюты</h2>
                 <!-- Не забудьте указать верный action-атрибут -->
-                <form class="modal-sell" method="post">
+                <form class="modal-sell" method="post" autocomplete="off" action="https://cryptostar.grading.htmlacademy.pro/" enctype="multipart/form-data">
                     <!--
                         Обратите внимание, что всем полям для отправки на сервер нужно указать
                         атрибуты name (их список вы найдёте в техзадании), а часть полей

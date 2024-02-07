@@ -18,8 +18,8 @@ const createRows = (contractorsData) => contractorsData.map((properties) => {
   tableRow.querySelector('.users-list__table-currency').textContent = balance.currency;
   tableRow.querySelector('.users-list__table-exchangerate').textContent = `${Math.round(exchangeRate)} ₽`;
 
-  const maxAmount = (status === 'seller') ? Math.round(balance.amount * exchangeRate) : balance.amount;
-  tableRow.querySelector('.users-list__table-cashlimit').textContent = `${minAmount} ₽ - ${maxAmount} ₽`;
+  const getMaxAmount = (status === 'seller') ? Math.round(balance.amount * exchangeRate) : balance.amount;
+  tableRow.querySelector('.users-list__table-cashlimit').textContent = `${minAmount} ₽ - ${getMaxAmount} ₽`;
 
   const paymentsList = tableRow.querySelector('.users-list__badges-list');
   paymentsList.innerHTML = '';
