@@ -1,6 +1,6 @@
 import { renderContractors } from './contractors-information/index.js';
 import { request } from './api.js';
-import { initTransaction } from './transaction/index.js'
+import { initTransaction, setSubmitDisabled } from './transaction/index.js'
 
 const BASE_URL = 'https://cryptostar.grading.htmlacademy.pro/';
 const USER_URL = 'user';
@@ -19,3 +19,16 @@ try {
   // renderStatus('data-error', {autoHide: 5000});
   console.log('Ошибка');
 }
+
+document.addEventListener('formdata', async (event) => {
+  try {
+    setSubmitDisabled(true);
+    await request(BASE_URL, {method: 'post', body: event.formData});
+    // resetForm();
+    // renderStatus('success');
+  } catch {
+    // renderStatus('error');
+  } finally {
+    setSubmitDisabled(false);
+  }
+});

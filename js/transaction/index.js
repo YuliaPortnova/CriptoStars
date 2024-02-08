@@ -1,8 +1,9 @@
 import { renderForm, resetForm } from './form.js';
-import { initValidation, checkValidity, resetValidity } from './validation.js';
+import { initValidation, checkValidity, resetValidity, showMessage } from './validation.js';
 
 const form = document.querySelector('.modal-form');
 const closeButton = document.querySelector('.modal__close-btn');
+const submitButton = document.querySelector('.modal__submit');
 
 const resetTransaction = () => {
   resetForm();
@@ -11,19 +12,22 @@ const resetTransaction = () => {
 
 const initTransaction = (contractorData, userData) => {
   renderForm(contractorData, userData);
-  initValidation(contractorData);
+  initValidation(contractorData, userData);
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     if (checkValidity(contractorData)) {
       new FormData(form);
-      console.log('форма отправлена');
-    } else {
-      console.log('форма не отправлена');
+      showMessage('success');
     }
   });
 
   closeButton.addEventListener('click', () => resetTransaction());
 };
 
-export { initTransaction };
+const setSubmitDisabled = (flag) => {
+  submitButton.disabled = flag;
+  submitButton.textContent = flag ? 'Обменять...' : 'Обменять!';
+};
+
+export { initTransaction, setSubmitDisabled };
