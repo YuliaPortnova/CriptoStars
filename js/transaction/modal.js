@@ -1,4 +1,4 @@
-const modal = document.querySelector('.modal--buy');
+const modal = document.querySelector('.modal');
 const closeButton = modal.querySelector('.modal__close-btn');
 
 const onDocumentKeydown = (event) => {
