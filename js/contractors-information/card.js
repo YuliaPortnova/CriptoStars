@@ -1,5 +1,9 @@
 const template = document.querySelector('#map-baloon__template');
 
+const createContractorClickHandler = (properties) => () => {
+  document.dispatchEvent(new CustomEvent('contractorSelect', {detail: properties}));
+};
+
 const createCard = (properties) => {
   const card = template.content.querySelector('.user-card').cloneNode(true);
   const { userName, isVerified, balance, exchangeRate, minAmount, paymentMethods } = properties;
@@ -11,6 +15,8 @@ const createCard = (properties) => {
   if (!isVerified) {
     card.querySelector('.user-card__user-name svg').remove();
   }
+
+  card.querySelector('.user-card__change-btn').addEventListener('click', createContractorClickHandler(properties));
   return card;
 };
 
