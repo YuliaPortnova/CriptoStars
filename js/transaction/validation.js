@@ -2,8 +2,10 @@ import '../../pristine/pristine.min.js';
 
 const form = document.querySelector('.modal-form');
 const exchangeAllButton = form.querySelector('.btn--exchange-all');
+const rublesAmount = form.querySelector('#rubles-amount');
+const keksAmount = form.querySelector('#keks-amount');
 
-const getMaxSendingAmount = (status, balance, exchangeRate, userBalances) => {
+const getMaxRublesAmount = (status, balance, exchangeRate, userBalances) => {
   const maxUserRubleBalances = userBalances.find((item) => item.currency === 'RUB');
   if (status === 'buyer') {
     return Math.min(balance.amount, maxUserRubleBalances.amount);
@@ -16,12 +18,12 @@ const getMaxSendingAmount = (status, balance, exchangeRate, userBalances) => {
 
 const round = (number) => Number(number.toFixed(2));
 
-const setCurrentSendingValue = (exchangeRate) => {
-  form.sendingAmount.value = round(form.receivingAmount.value * exchangeRate);
+const setCurrentRublesValue = (exchangeRate) => {
+  rublesAmount.value = round(keksAmount.value * exchangeRate);
 };
 
-const setCurrentReceivingValue = (exchangeRate) => {
-  form.receivingAmount.value = round(form.sendingAmount.value / exchangeRate);
+const setCurrentKeksValue = (exchangeRate) => {
+  keksAmount.value = round(rublesAmount.value / exchangeRate);
 };
 
 let pristine;
@@ -34,32 +36,35 @@ const initValidation = (contractorData, userData) => {
   });
 
   const {status, balance, exchangeRate, minAmount } = contractorData;
-  const maxSendingAmount = getMaxSendingAmount(status, balance, exchangeRate, userData.balances);
-  const maxReceivingAmount = maxSendingAmount / exchangeRate;
-  const minReceivingAmount = minAmount / exchangeRate;
+  const maxRublesAmount = getMaxRublesAmount(status, balance, exchangeRate, userData.balances);
+  rublesAmount.name = (status === 'buyer') ? 'receivingAmount' : 'sendingAmount';
+  keksAmount.name = (status === 'buyer') ? 'sendingAmount' : 'receivingAmount';
+
+  const maxKeksAmount = maxRublesAmount / exchangeRate;
+  const minKeksAmount = minAmount / exchangeRate;
 
   pristine.addValidator (
-    form.sendingAmount,
-    (value) => value <= maxSendingAmount,
-    `Максимальная сумма — ${round(maxSendingAmount)} ₽`
+    rublesAmount,
+    (value) => value <= round(maxRublesAmount),
+    `Максимальная сумма — ${round(maxRublesAmount)} ₽`
   );
 
   pristine.addValidator (
-    form.sendingAmount,
+    rublesAmount,
     (value) => value.length > 0 && value >= minAmount,
     `Минимальная сумма — ${minAmount} ₽`
   );
 
   pristine.addValidator (
-    form.receivingAmount,
-    (value) => value <= maxReceivingAmount,
-    `Максимальная сумма — ${round(maxReceivingAmount)} КЕКС`
+    keksAmount,
+    (value) => value <= round(maxKeksAmount),
+    `Максимальная сумма — ${round(maxKeksAmount)} КЕКС`
   );
 
   pristine.addValidator (
-    form.receivingAmount,
-    (value) => value.length > 0 && value >= minReceivingAmount,
-    `Минимальная сумма — ${round(minReceivingAmount)} КЕКС`
+    keksAmount,
+    (value) => value.length > 0 && value >= round(minKeksAmount),
+    `Минимальная сумма — ${round(minKeksAmount)} КЕКС`
   );
 
   pristine.addValidator (
@@ -75,23 +80,23 @@ const initValidation = (contractorData, userData) => {
   );
 
   form.addEventListener('input', (event) => {
-    switch (event.target.name) {
-      case 'sendingAmount':
-        setCurrentReceivingValue(exchangeRate);
-        pristine.validate(form.receivingAmount);
+    switch (event.target.id) {
+      case 'rubles-amount':
+        setCurrentKeksValue(exchangeRate);
+        pristine.validate(keksAmount);
         break;
-      case 'receivingAmount':
-        setCurrentSendingValue(exchangeRate);
-        pristine.validate(form.sendingAmount);
+      case 'keks-amount':
+        setCurrentRublesValue(exchangeRate);
+        pristine.validate(rublesAmount);
         break;
     }
   });
 
   exchangeAllButton.addEventListener('click', () => {
-    form.sendingAmount.value = maxSendingAmount;
-    setCurrentReceivingValue(exchangeRate);
-    pristine.validate(form.receivingAmount);
-    pristine.validate(form.sendingAmount);
+    rublesAmount.value = maxRublesAmount;
+    setCurrentKeksValue(exchangeRate);
+    pristine.validate(keksAmount);
+    pristine.validate(rublesAmount);
   });
 };
 
