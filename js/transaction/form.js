@@ -9,6 +9,8 @@ const rate = form.querySelector('.transaction-info__exchange-rate');
 const limit = form.querySelector('.transaction-info__limit');
 const name = form.querySelector('.transaction-info__name');
 
+let onPaymentMethodChange;
+
 const renderForm = (contractorData, userData) => {
   const {id, status, userName, isVerified, balance, exchangeRate, minAmount, paymentMethods, wallet } = contractorData;
 
@@ -36,19 +38,36 @@ const renderForm = (contractorData, userData) => {
   form.type.value = (status === 'seller') ? 'BUY' : 'SELL';
   form.contractorId.value = id;
   form.exchangeRate.value = exchangeRate;
-  form.sendingCurrency.value = balance.currency;
+  form.sendingCurrency.value = (status === 'seller') ? 'RUB' : 'KEKS';
   form.receivingCurrency.value = (status === 'seller') ? 'KEKS' : 'RUB';
   form.wallet.placeholder = (status === 'seller') ? userData.wallet.address : wallet.address;
 
   paymentMethodOptions.forEach((option) => {
-    const isNecessaryForBuyer = () => userData.paymentMethods.some((method) => method.provider === option.value);
-    const isNecessaryForSeller = () => paymentMethods.some((method) => method.provider === option.value);
-
-    const isNecessary = (status === 'seller') ? isNecessaryForSeller : isNecessaryForBuyer;
+    let isNecessary;
+    if (status === 'buyer') {
+      isNecessary = userData.paymentMethods.some((method) => method.provider === option.value);
+    }
+    if (status === 'seller') {
+      isNecessary = paymentMethods.some((method) => method.provider === option.value);
+    }
     if (!isNecessary) {
       option.disabled = true;
     }
   });
+
+  onPaymentMethodChange = () => {
+    if (status === 'seller') {
+      const currentMethod = paymentMethods.find((method) => method.provider === form.paymentMethod.value);
+      form.accountNumber.placeholder = currentMethod.accountNumber ? currentMethod.accountNumber : '';
+    }
+
+    if (status === 'buyer') {
+      const currentMethod = userData.paymentMethods.find((method) => method.provider === form.paymentMethod.value);
+      form.accountNumber.placeholder = currentMethod.accountNumber ? currentMethod.accountNumber : '';
+    }
+  };
+
+  form.paymentMethod.addEventListener('change', onPaymentMethodChange);
 
   openModal();
 };
@@ -59,6 +78,8 @@ const resetForm = () => {
       option.disabled = false;
     }
   });
+  form.paymentMethod.removeEventListener('change', onPaymentMethodChange);
+  form.accountNumber.placeholder = '';
   form.reset();
 };
 
