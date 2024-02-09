@@ -7,6 +7,8 @@ const createContractorClickHandler = (properties) => () => {
 
 const createRows = (contractorsData) => contractorsData.map((properties) => {
   const tableRow = template.content.querySelector('.users-list__table-row').cloneNode(true);
+  const paymentMethodItems = tableRow.querySelectorAll('.users-list__badges-item');
+
   const {status, userName, isVerified, balance, exchangeRate, minAmount, paymentMethods } = properties;
 
   const openButton = tableRow.querySelector('.btn--modal-open');
@@ -21,17 +23,16 @@ const createRows = (contractorsData) => contractorsData.map((properties) => {
   const getMaxAmount = (status === 'seller') ? Math.round(balance.amount * exchangeRate) : balance.amount;
   tableRow.querySelector('.users-list__table-cashlimit').textContent = `${minAmount} ₽ - ${getMaxAmount} ₽`;
 
-  const paymentsList = tableRow.querySelector('.users-list__badges-list');
-  paymentsList.innerHTML = '';
-  if (paymentMethods) {
-    paymentMethods.forEach((paymentMethod) => {
-      const method = document.createElement('li');
-      method.classList.add('users-list__badges-item');
-      method.classList.add('badge');
-      method.textContent = paymentMethod.provider;
-      paymentsList.appendChild(method);
-    });
-  }
+  paymentMethodItems.forEach((methodItem) => {
+    if (status === 'seller') {
+      const isNecessary = paymentMethods.some((method) => method.provider === methodItem.dataset.paymentMethod);
+      if (!isNecessary) {
+        methodItem.remove();
+      }
+    } else {
+      methodItem.remove();
+    }
+  });
 
   openButton.addEventListener ('click', createContractorClickHandler(properties));
   return tableRow;
