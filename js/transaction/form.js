@@ -30,9 +30,9 @@ const renderForm = (contractorData, userData) => {
 
   name.textContent = userName;
   star.style.display = (isVerified) ? 'block' : 'none';
-  rate.textContent = `${Math.round(exchangeRate)} ₽`;
+  rate.textContent = `${exchangeRate} ₽`;
 
-  const getMaxAmount = (status === 'seller') ? Math.floor(balance.amount * exchangeRate) : balance.amount;
+  const getMaxAmount = (status === 'seller') ? (balance.amount * exchangeRate) : balance.amount;
   limit.textContent = `${minAmount} ₽ - ${getMaxAmount} ₽`;
 
   form.type.value = (status === 'seller') ? 'BUY' : 'SELL';

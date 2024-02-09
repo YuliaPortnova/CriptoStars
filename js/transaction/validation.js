@@ -14,12 +14,14 @@ const getMaxSendingAmount = (status, balance, exchangeRate, userBalances) => {
   }
 };
 
+const round = (number) => Number(number.toFixed(2));
+
 const setCurrentSendingValue = (exchangeRate) => {
-  form.sendingAmount.value = Math.round(form.receivingAmount.value * exchangeRate);
+  form.sendingAmount.value = round(form.receivingAmount.value * exchangeRate);
 };
 
 const setCurrentReceivingValue = (exchangeRate) => {
-  form.receivingAmount.value = Math.round(form.sendingAmount.value / exchangeRate);
+  form.receivingAmount.value = round(form.sendingAmount.value / exchangeRate);
 };
 
 let pristine;
@@ -35,12 +37,11 @@ const initValidation = (contractorData, userData) => {
   const maxSendingAmount = getMaxSendingAmount(status, balance, exchangeRate, userData.balances);
   const maxReceivingAmount = maxSendingAmount / exchangeRate;
   const minReceivingAmount = minAmount / exchangeRate;
-  form.sendingAmount.step = Math.floor(exchangeRate);
 
   pristine.addValidator (
     form.sendingAmount,
     (value) => value <= maxSendingAmount,
-    `Максимальная сумма — ${Math.floor(maxSendingAmount)} ₽`
+    `Максимальная сумма — ${Number(round(maxSendingAmount))} ₽`
   );
 
   pristine.addValidator (
@@ -52,13 +53,13 @@ const initValidation = (contractorData, userData) => {
   pristine.addValidator (
     form.receivingAmount,
     (value) => value <= maxReceivingAmount,
-    `Максимальная сумма — ${Math.floor(maxReceivingAmount)} КЕКС`
+    `Максимальная сумма — ${round(maxReceivingAmount)} КЕКС`
   );
 
   pristine.addValidator (
     form.receivingAmount,
     (value) => value.length > 0 && value >= minReceivingAmount,
-    `Минимальная сумма — ${Math.ceil(minReceivingAmount)} КЕКС`
+    `Минимальная сумма — ${round(minReceivingAmount)} КЕКС`
   );
 
   pristine.addValidator (
@@ -97,14 +98,15 @@ const initValidation = (contractorData, userData) => {
 const checkValidity = () => pristine.validate();
 const resetValidity = () => pristine.destroy();
 
-const showMessage = (status) => {
-  const message = form.querySelector(`.modal__validation-message--${status}`);
-  message.style.display = 'flex';
-};
-
 const hideMessages = () => {
   form.querySelector('.modal__validation-message--error').style.display = 'none';
   form.querySelector('.modal__validation-message--success').style.display = 'none';
+};
+
+const showMessage = (status) => {
+  hideMessages();
+  const message = form.querySelector(`.modal__validation-message--${status}`);
+  message.style.display = 'flex';
 };
 
 export { initValidation, checkValidity, resetValidity, showMessage, hideMessages };
