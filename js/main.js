@@ -7,8 +7,8 @@ const BASE_URL = 'https://cryptostar.grading.htmlacademy.pro/';
 const USER_URL = 'user';
 const CONTRACTORS_URL = 'contractors';
 
-try {
-  (async () => {
+(async () => {
+  try {
     const contractorsData = await request(`${BASE_URL}${CONTRACTORS_URL}`);
     renderContractors(contractorsData);
     const userData = await request(`${BASE_URL}${USER_URL}`);
@@ -16,10 +16,10 @@ try {
     document.addEventListener('contractorSelect', (event) => {
       initTransaction(event.detail, userData);
     });
-  })();
-} catch (error) {
-  renderErrorContainer();
-}
+  } catch (error) {
+    renderErrorContainer();
+  }
+})();
 
 document.addEventListener('formdata', async (event) => {
   try {
