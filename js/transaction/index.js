@@ -30,4 +30,4 @@ const setSubmitDisabled = (flag) => {
   submitButton.textContent = flag ? 'Обменять...' : 'Обменять!';
 };
 
-export { initTransaction, setSubmitDisabled, showMessage };
+export { initTransaction, setSubmitDisabled, showMessage, resetTransaction };

@@ -8,6 +8,8 @@ const mapControl = document.querySelector('.tabs__control--map');
 const usersList = document.querySelector('.users-list');
 const verifiedContractorsToggle = document.querySelector('#checked-users');
 const noDataContainer = document.querySelector('.container--no-data');
+const errorContainer = document.querySelector('.container--error-message');
+const contractorsContainer = document.querySelector('.container--contractors');
 
 const getSellers = (data) => data.filter((contractor) => contractor.status === 'seller');
 const getBuyers = (data) => data.filter((contractor) => contractor.status === 'buyer');
@@ -93,4 +95,9 @@ const renderContractors = (contractors) => {
   renderTable(sellers);
 };
 
-export { renderContractors };
+const renderErrorContainer = () => {
+  errorContainer.style.display = 'block';
+  contractorsContainer.style.display = 'none';
+};
+
+export { renderContractors, renderErrorContainer };
