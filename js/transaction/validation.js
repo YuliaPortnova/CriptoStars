@@ -6,17 +6,21 @@ const rublesAmount = form.querySelector('#rubles-amount');
 const keksAmount = form.querySelector('#keks-amount');
 
 const getMaxRublesAmount = (status, balance, exchangeRate, userBalances) => {
-  const maxUserRubleBalances = userBalances.find((item) => item.currency === 'RUB');
+  const getMaxUserBalances = (currency) => userBalances.find((item) => item.currency === currency);
+  const maxUserKeksBalances = getMaxUserBalances('KEKS');
+  const maxUserRublesBalances = getMaxUserBalances('RUB');
+  const maxUserRublesAmount = maxUserKeksBalances.amount * exchangeRate;
   if (status === 'buyer') {
-    return Math.min(balance.amount, maxUserRubleBalances.amount);
+    return Math.min(balance.amount, maxUserRublesAmount);
   }
   if (status === 'seller') {
     const maxAmountForSeller = balance.amount * exchangeRate;
-    return Math.min(maxAmountForSeller, maxUserRubleBalances.amount);
+    return Math.min(maxAmountForSeller, maxUserRublesBalances.amount);
   }
 };
 
-const round = (number) => Number(number.toFixed(2));
+// const round = (number) => Number(number.toFixed(2));
+const round = (number) => number;
 
 const setCurrentRublesValue = (exchangeRate) => {
   rublesAmount.value = round(keksAmount.value * exchangeRate);
@@ -93,8 +97,14 @@ const initValidation = (contractorData, userData) => {
   });
 
   exchangeAllButton.addEventListener('click', () => {
-    rublesAmount.value = maxRublesAmount;
-    setCurrentKeksValue(exchangeRate);
+    if (status === 'seller') {
+      rublesAmount.value = round(maxRublesAmount);
+      setCurrentKeksValue(exchangeRate);
+    }
+    if (status === 'buyer') {
+      keksAmount.value = round(maxKeksAmount);
+      setCurrentRublesValue(exchangeRate);
+    }
     pristine.validate(keksAmount);
     pristine.validate(rublesAmount);
   });

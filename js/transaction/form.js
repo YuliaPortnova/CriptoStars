@@ -72,7 +72,7 @@ const renderForm = (contractorData, userData) => {
   openModal();
 };
 
-const resetForm = () => {
+const closeForm = () => {
   paymentMethodOptions.forEach((option, index) => {
     if (index) {
       option.disabled = false;
@@ -83,4 +83,4 @@ const resetForm = () => {
   form.reset();
 };
 
-export { renderForm, resetForm };
+export { renderForm, closeForm };

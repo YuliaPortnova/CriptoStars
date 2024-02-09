@@ -1,4 +1,4 @@
-import { renderForm, resetForm } from './form.js';
+import { renderForm, closeForm } from './form.js';
 import { initValidation, checkValidity, resetValidity, showMessage, hideMessages } from './validation.js';
 
 const form = document.querySelector('.modal-form');
@@ -6,16 +6,19 @@ const closeButton = document.querySelector('.modal__close-btn');
 const submitButton = document.querySelector('.modal__submit');
 
 let onFormSubmit;
-let onCloseButtonClick;
 
-const resetTransaction = () => {
-  resetForm();
+const onCloseButtonClick = () => {
+  closeForm();
   resetValidity();
   hideMessages();
   form.removeEventListener('submit', onFormSubmit);
   onFormSubmit = undefined;
   closeButton.removeEventListener('click', onCloseButtonClick);
-  onCloseButtonClick = undefined;
+};
+
+const resetTransaction = () => {
+  form.reset();
+  resetValidity();
 };
 
 const initTransaction = (contractorData, userData) => {
@@ -28,8 +31,6 @@ const initTransaction = (contractorData, userData) => {
       new FormData(form);
     }
   };
-
-  onCloseButtonClick = resetTransaction;
 
   form.addEventListener('submit', onFormSubmit);
   closeButton.addEventListener('click', onCloseButtonClick);
