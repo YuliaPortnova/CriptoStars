@@ -26,8 +26,8 @@ let pristine;
 
 const initValidation = (contractorData, userData) => {
   pristine = new Pristine(form, {
-    classTo: 'custom-input',
-    errorTextParent: 'custom-input',
+    classTo: 'form-validation',
+    errorTextParent: 'form-validation',
     errorTextClass: 'custom-input__error',
   });
 
@@ -59,6 +59,12 @@ const initValidation = (contractorData, userData) => {
     form.receivingAmount,
     (value) => value.length > 0 && value >= minReceivingAmount,
     `Минимальная сумма — ${Math.ceil(minReceivingAmount)} КЕКС`
+  );
+
+  pristine.addValidator (
+    form.paymentMethod,
+    (value) => value !== 'Выберите платёжную систему',
+    'Платежная система не выбрана'
   );
 
   pristine.addValidator (
@@ -96,4 +102,9 @@ const showMessage = (status) => {
   message.style.display = 'flex';
 };
 
-export { initValidation, checkValidity, resetValidity, showMessage };
+const hideMessages = () => {
+  form.querySelector('.modal__validation-message--error').style.display = 'none';
+  form.querySelector('.modal__validation-message--success').style.display = 'none';
+};
+
+export { initValidation, checkValidity, resetValidity, showMessage, hideMessages };
