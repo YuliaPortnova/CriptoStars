@@ -1,9 +1,5 @@
 const template = document.querySelector('#map-baloon__template');
 
-const createContractorClickHandler = (properties) => () => {
-  document.dispatchEvent(new CustomEvent('contractorSelect', {detail: properties}));
-};
-
 const createCard = (properties) => {
   const card = template.content.querySelector('.user-card').cloneNode(true);
   const paymentMethodItems = card.querySelectorAll('.user-card__badges-item');
@@ -22,7 +18,9 @@ const createCard = (properties) => {
       methodItem.remove();
     }
   });
-  card.querySelector('.user-card__change-btn').addEventListener('click', createContractorClickHandler(properties));
+  card.querySelector('.user-card__change-btn').addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('contractorSelect', {detail: properties}));
+  });
   return card;
 };
 
