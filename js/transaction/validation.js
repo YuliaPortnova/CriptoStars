@@ -41,7 +41,7 @@ const initValidation = (contractorData, userData) => {
   pristine.addValidator (
     form.sendingAmount,
     (value) => value <= maxSendingAmount,
-    `Максимальная сумма — ${Number(round(maxSendingAmount))} ₽`
+    `Максимальная сумма — ${round(maxSendingAmount)} ₽`
   );
 
   pristine.addValidator (
@@ -70,8 +70,8 @@ const initValidation = (contractorData, userData) => {
 
   pristine.addValidator (
     form.paymentPassword,
-    (value) => value.length > 0,
-    'Введите пароль'
+    (value) => Number(value) === 180712,
+    'Введите корректный пароль'
   );
 
   form.addEventListener('input', (event) => {
