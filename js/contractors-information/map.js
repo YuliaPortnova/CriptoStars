@@ -25,11 +25,13 @@ L.tileLayer(TILE_LAYER, {
   attribution: COPYRIGHT
 }).addTo(map);
 
-const notVerifiedIcon = L.icon({
-  iconUrl: iconConfig.url.notVerified,
+const createIcon = (url) => L.icon({
+  iconUrl: url,
   iconSize: [iconConfig.width, iconConfig.height],
   iconAnchor: [iconConfig.anchorX, iconConfig.anchorY],
 });
+
+const notVerifiedIcon = createIcon(iconConfig.url.notVerified);
 
 const notVerifiedMarkerGroup = L.layerGroup().addTo(map);
 
@@ -56,11 +58,7 @@ const createNotVerifiedMarkers = (contractors) => {
   });
 };
 
-const verifiedIcon = L.icon({
-  iconUrl: iconConfig.url.verified,
-  iconSize: [iconConfig.width, iconConfig.height],
-  iconAnchor: [iconConfig.anchorX, iconConfig.anchorY],
-});
+const verifiedIcon = createIcon(iconConfig.url.verified);
 
 const verifiedMarkerGroup = L.layerGroup().addTo(map);
 
