@@ -7,6 +7,7 @@ const listControl = document.querySelector('.tabs__control--list');
 const mapControl = document.querySelector('.tabs__control--map');
 const usersList = document.querySelector('.users-list');
 const verifiedContractorsToggle = document.querySelector('#checked-users');
+const noDataContainer = document.querySelector('.container--no-data');
 
 const getSellers = (data) => data.filter((contractor) => contractor.status === 'seller');
 const getBuyers = (data) => data.filter((contractor) => contractor.status === 'buyer');
@@ -48,6 +49,9 @@ const repaintContractors = (sellers, buyers, cashSellers) => {
 };
 
 const renderContractors = (contractors) => {
+  if (!contractors) {
+    noDataContainer.style.display = 'block';
+  }
   const sellers = getSellers(contractors);
   const buyers = getBuyers(contractors);
   const cashSellers = sellers.filter((seller) => seller.paymentMethods.some((method) => method.provider === 'Cash in person'));

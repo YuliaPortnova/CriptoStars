@@ -18,7 +18,6 @@ const initTransaction = (contractorData, userData) => {
     event.preventDefault();
     if (checkValidity(contractorData)) {
       new FormData(form);
-      showMessage('success');
     }
   });
 
@@ -30,4 +29,4 @@ const setSubmitDisabled = (flag) => {
   submitButton.textContent = flag ? 'Обменять...' : 'Обменять!';
 };
 
-export { initTransaction, setSubmitDisabled };
+export { initTransaction, setSubmitDisabled, showMessage };
