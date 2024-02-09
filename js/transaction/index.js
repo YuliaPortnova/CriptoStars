@@ -5,24 +5,34 @@ const form = document.querySelector('.modal-form');
 const closeButton = document.querySelector('.modal__close-btn');
 const submitButton = document.querySelector('.modal__submit');
 
+let onFormSubmit;
+let onCloseButtonClick;
+
 const resetTransaction = () => {
   resetForm();
   resetValidity();
   hideMessages();
+  form.removeEventListener('submit', onFormSubmit);
+  onFormSubmit = undefined;
+  closeButton.removeEventListener('click', onCloseButtonClick);
+  onCloseButtonClick = undefined;
 };
 
 const initTransaction = (contractorData, userData) => {
   renderForm(contractorData, userData);
   initValidation(contractorData, userData);
 
-  form.addEventListener('submit', (event) => {
+  onFormSubmit = (event) => {
     event.preventDefault();
     if (checkValidity(contractorData)) {
       new FormData(form);
     }
-  });
+  };
 
-  closeButton.addEventListener('click', () => resetTransaction());
+  onCloseButtonClick = resetTransaction;
+
+  form.addEventListener('submit', onFormSubmit);
+  closeButton.addEventListener('click', onCloseButtonClick);
 };
 
 const setSubmitDisabled = (flag) => {
