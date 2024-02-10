@@ -87,9 +87,10 @@ const createVerifiedMarkers = (contractors) => {
 
 const renderMap = (verifiedContractors, notVerifiedContractors) => {
   container.style.display = 'block';
-
-  createNotVerifiedMarkers(notVerifiedContractors);
-  createVerifiedMarkers(verifiedContractors);
+  if (verifiedContractors || notVerifiedContractors) {
+    createNotVerifiedMarkers(notVerifiedContractors);
+    createVerifiedMarkers(verifiedContractors);
+  }
   map.invalidateSize(false);
 };
 
