@@ -34,7 +34,7 @@ const initValidation = (contractorData, userData) => {
     classTo: 'form-validation',
     errorTextParent: 'form-validation',
     errorTextClass: 'custom-input__error',
-  });
+  }, false);
 
   const {status, balance, exchangeRate, minAmount } = contractorData;
   const maxRublesAmount = getMaxRublesAmount(status, balance, exchangeRate, userData.balances);
@@ -85,10 +85,12 @@ const initValidation = (contractorData, userData) => {
       case 'rubles-amount':
         setCurrentKeksValue(exchangeRate);
         pristine.validate(keksAmount);
+        pristine.validate(rublesAmount);
         break;
       case 'keks-amount':
         setCurrentRublesValue(exchangeRate);
         pristine.validate(rublesAmount);
+        pristine.validate(keksAmount);
         break;
     }
   });
