@@ -25,44 +25,22 @@ L.tileLayer(TILE_LAYER, {
   attribution: COPYRIGHT
 }).addTo(map);
 
-const createIcon = (url) => L.icon({
+const getIcon = (url) => L.icon({
   iconUrl: url,
   iconSize: [iconConfig.width, iconConfig.height],
   iconAnchor: [iconConfig.anchorX, iconConfig.anchorY],
 });
 
-const notVerifiedIcon = createIcon(iconConfig.url.notVerified);
+const notVerifiedIcon = getIcon(iconConfig.url.notVerified);
+const verifiedIcon = getIcon(iconConfig.url.verified);
 
 const notVerifiedMarkerGroup = L.layerGroup().addTo(map);
-
-const createNotVerifiedMarker = (point, data) => {
-  const {lat, lng} = point;
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon: notVerifiedIcon,
-    },
-  );
-  marker
-    .addTo(notVerifiedMarkerGroup)
-    .bindPopup(createCard(data));
-};
-
-const createNotVerifiedMarkers = (contractors) => {
-  notVerifiedMarkerGroup.clearLayers();
-  contractors.forEach((contractor) => {
-    createNotVerifiedMarker(contractor.coords, contractor);
-  });
-};
-
-const verifiedIcon = createIcon(iconConfig.url.verified);
-
 const verifiedMarkerGroup = L.layerGroup().addTo(map);
 
-const createVerifiedMarker = (point, data) => {
+const createMarker = (point, data, isVerified) => {
+  const icon = isVerified ? verifiedIcon : notVerifiedIcon;
+  const markerGroup = isVerified ? verifiedMarkerGroup : notVerifiedMarkerGroup;
+
   const {lat, lng} = point;
   const marker = L.marker(
     {
@@ -70,26 +48,29 @@ const createVerifiedMarker = (point, data) => {
       lng,
     },
     {
-      icon: verifiedIcon,
+      icon,
     },
   );
   marker
-    .addTo(verifiedMarkerGroup)
+    .addTo(markerGroup)
     .bindPopup(createCard(data));
 };
 
-const createVerifiedMarkers = (contractors) => {
-  verifiedMarkerGroup.clearLayers();
+const createMarkers = (contractors, isVerified) => {
+  const markerGroup = isVerified ? verifiedMarkerGroup : notVerifiedMarkerGroup;
+  markerGroup.clearLayers();
   contractors.forEach((contractor) => {
-    createVerifiedMarker(contractor.coords, contractor);
+    createMarker(contractor.coords, contractor, isVerified);
   });
 };
 
 const renderMap = (verifiedContractors, notVerifiedContractors) => {
   container.style.display = 'block';
-  if (verifiedContractors || notVerifiedContractors) {
-    createNotVerifiedMarkers(notVerifiedContractors);
-    createVerifiedMarkers(verifiedContractors);
+  if (notVerifiedContractors) {
+    createMarkers(notVerifiedContractors, false);
+  }
+  if (verifiedContractors) {
+    createMarkers(verifiedContractors, true);
   }
   map.invalidateSize(false);
 };
@@ -99,7 +80,7 @@ const hideNotVerifiedMarkers = () => {
 };
 
 const showNotVerifiedMarkers = (notVerifiedContractors) => {
-  createNotVerifiedMarkers(notVerifiedContractors);
+  createMarkers(notVerifiedContractors, false);
 };
 
 const closeMap = () => {
