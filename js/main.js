@@ -1,4 +1,4 @@
-import { renderContractors, renderErrorContainer } from './contractors-information/index.js';
+import { initContractorsInformation, renderErrorContainer } from './contractors-information/index.js';
 import { request } from './api.js';
 import { initTransaction, setSubmitDisabled, showMessage, resetTransaction } from './transaction/index.js';
 import { fillUserInformation } from './user-information.js';
@@ -10,7 +10,7 @@ const CONTRACTORS_URL = 'contractors';
 (async () => {
   try {
     const contractorsData = await request(`${BASE_URL}${CONTRACTORS_URL}`);
-    renderContractors(contractorsData);
+    initContractorsInformation(contractorsData);
     const userData = await request(`${BASE_URL}${USER_URL}`);
     fillUserInformation(userData);
     document.addEventListener('contractorSelect', (event) => {
