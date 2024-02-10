@@ -19,15 +19,12 @@ const getMaxRublesAmount = (status, balance, exchangeRate, userBalances) => {
   }
 };
 
-// const round = (number) => Number(number.toFixed(2));
-const round = (number) => number;
-
 const setCurrentRublesValue = (exchangeRate) => {
-  rublesAmount.value = round(keksAmount.value * exchangeRate);
+  rublesAmount.value = keksAmount.value * exchangeRate;
 };
 
 const setCurrentKeksValue = (exchangeRate) => {
-  keksAmount.value = round(rublesAmount.value / exchangeRate);
+  keksAmount.value = rublesAmount.value / exchangeRate;
 };
 
 let pristine;
@@ -49,8 +46,8 @@ const initValidation = (contractorData, userData) => {
 
   pristine.addValidator (
     rublesAmount,
-    (value) => value <= round(maxRublesAmount),
-    `Максимальная сумма — ${round(maxRublesAmount)} ₽`
+    (value) => value <= maxRublesAmount,
+    `Максимальная сумма — ${maxRublesAmount} ₽`
   );
 
   pristine.addValidator (
@@ -61,14 +58,14 @@ const initValidation = (contractorData, userData) => {
 
   pristine.addValidator (
     keksAmount,
-    (value) => value <= round(maxKeksAmount),
-    `Максимальная сумма — ${round(maxKeksAmount)} КЕКС`
+    (value) => value <= maxKeksAmount,
+    `Максимальная сумма — ${maxKeksAmount} КЕКС`
   );
 
   pristine.addValidator (
     keksAmount,
-    (value) => value.length > 0 && value >= round(minKeksAmount),
-    `Минимальная сумма — ${round(minKeksAmount)} КЕКС`
+    (value) => value.length > 0 && value >= minKeksAmount,
+    `Минимальная сумма — ${minKeksAmount} КЕКС`
   );
 
   pristine.addValidator (
@@ -98,11 +95,11 @@ const initValidation = (contractorData, userData) => {
 
   exchangeAllButton.addEventListener('click', () => {
     if (status === 'seller') {
-      rublesAmount.value = round(maxRublesAmount);
+      rublesAmount.value = maxRublesAmount;
       setCurrentKeksValue(exchangeRate);
     }
     if (status === 'buyer') {
-      keksAmount.value = round(maxKeksAmount);
+      keksAmount.value = maxKeksAmount;
       setCurrentRublesValue(exchangeRate);
     }
     pristine.validate(keksAmount);
