@@ -59,7 +59,6 @@ const repaintContractors = (sellers, buyers, cashSellers, renderTable, hideNotVe
     }
   }
   if (isVerified && isList && isBuyers) {
-    console.log(getVerifiedContractors(buyers).length);
     if (!getVerifiedContractors(buyers).length) {
       toggleNoDataContainer('block');
     } else {
