@@ -1,3 +1,7 @@
+const errorContainer = document.querySelector('.container--error-message');
+const contractorsContainer = document.querySelector('.container--contractors');
+const userContainer = document.querySelector('.user-profile');
+
 const request = async (url, options) => {
   const response = await fetch(url, options);
 
@@ -7,4 +11,10 @@ const request = async (url, options) => {
   return response.json();
 };
 
-export { request };
+const renderDataError = () => {
+  errorContainer.style.display = 'block';
+  contractorsContainer.style.display = 'none';
+  userContainer.style.display = 'none';
+};
+
+export { request, renderDataError };

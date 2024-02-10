@@ -1,5 +1,5 @@
-import { initContractorsInformation, renderErrorContainer } from './contractors-information/index.js';
-import { request } from './api.js';
+import { initContractorsInformation } from './contractors-information/index.js';
+import { request, renderDataError } from './api.js';
 import { initTransaction, setSubmitDisabled, showMessage, resetTransaction } from './transaction/index.js';
 import { fillUserInformation } from './user-information.js';
 
@@ -17,7 +17,7 @@ const CONTRACTORS_URL = 'contractors';
       initTransaction(event.detail, userData);
     });
   } catch (error) {
-    renderErrorContainer();
+    renderDataError();
   }
 })();
 
