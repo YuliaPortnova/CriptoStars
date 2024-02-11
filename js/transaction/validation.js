@@ -1,5 +1,13 @@
 import '../../pristine/pristine.min.js';
 
+const PASSWORD = 180712;
+const PAYMENT_METHOD_HEADER = 'Выберите платёжную систему';
+
+const messages = {
+  paymentMethod: 'Платежная система не выбрана',
+  password: 'Введите корректный пароль',
+};
+
 const form = document.querySelector('.modal-form');
 const exchangeAllButton = form.querySelector('.btn--exchange-all');
 const rublesAmount = form.querySelector('#rubles-amount');
@@ -70,14 +78,14 @@ const initValidation = (contractorData, userData) => {
 
   pristine.addValidator (
     form.paymentMethod,
-    (value) => value !== 'Выберите платёжную систему',
-    'Платежная система не выбрана'
+    (value) => value !== PAYMENT_METHOD_HEADER,
+    messages.paymentMethod
   );
 
   pristine.addValidator (
     form.paymentPassword,
-    (value) => Number(value) === 180712,
-    'Введите корректный пароль'
+    (value) => Number(value) === PASSWORD,
+    messages.password
   );
 
   form.addEventListener('input', (event) => {
