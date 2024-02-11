@@ -41,53 +41,25 @@ const repaintContractors = (sellers, buyers, cashSellers) => {
   const isList = listControl.classList.contains('is-active');
   const isMap = mapControl.classList.contains('is-active');
   const isSellers = sellersControl.classList.contains('is-active');
-  const isBuyers = buyersControl.classList.contains('is-active');
-  const isSellersListEmpty = !sellers || sellers.length === 0;
-  const isBuyersListEmpty = !buyers || buyers.length === 0;
 
-  if (isVerifiedOnly && isList && isSellers) {
-    const verifiedSellers = filterVerifiedContractors(sellers, true);
-    if (verifiedSellers.length === 0) {
+  if (isList) {
+    const data = (isSellers) ? sellers : buyers;
+    const currentContractors = (isVerifiedOnly) ? filterVerifiedContractors(data, true) : data;
+    if (currentContractors.length === 0) {
       showNoDataContainer();
     } else {
       hideNoDataContainer();
-      renderTable(verifiedSellers);
-    }
-  }
-  if (!isVerifiedOnly && isList && isSellers) {
-    if (isSellersListEmpty) {
-      showNoDataContainer();
-    } else {
-      hideNoDataContainer();
-      renderTable(sellers);
-    }
-  }
-  if (isVerifiedOnly && isList && isBuyers) {
-    const verifiedBuyers = filterVerifiedContractors(buyers, true);
-    if (verifiedBuyers.length === 0) {
-      showNoDataContainer();
-    } else {
-      hideNoDataContainer();
-      renderTable(verifiedBuyers);
-    }
-  }
-  if (!isVerifiedOnly && isList && isBuyers) {
-    if (isBuyersListEmpty) {
-      showNoDataContainer();
-    } else {
-      hideNoDataContainer();
-      renderTable(buyers);
+      renderTable(currentContractors);
     }
   }
 
-  if (isVerifiedOnly && isMap) {
+  if (isMap) {
     hideNoDataContainer();
-    hideNotVerifiedMarkers();
-  }
-
-  if (!isVerifiedOnly && isMap) {
-    hideNoDataContainer('none');
-    showNotVerifiedMarkers(filterVerifiedContractors(cashSellers, false));
+    if (isVerifiedOnly) {
+      hideNotVerifiedMarkers();
+    } else {
+      showNotVerifiedMarkers(filterVerifiedContractors(cashSellers, false));
+    }
   }
 };
 
