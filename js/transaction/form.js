@@ -1,5 +1,8 @@
 import { openModal } from './modal.js';
 
+const MODAL_BUY_TITLE = 'Покупка криптовалюты';
+const MODAL_SELL_TITLE = 'Продажа криптовалюты';
+
 const form = document.querySelector('.modal-form');
 const paymentMethodOptions = form.querySelectorAll('.select-paymentMethod option');
 const modalTitle = document.querySelector('.modal__description');
@@ -15,14 +18,14 @@ const renderForm = (contractorData, userData) => {
   const {id, status, userName, isVerified, balance, exchangeRate, minAmount, paymentMethods, wallet } = contractorData;
 
   if (status === 'seller') {
-    modalTitle.textContent = 'Покупка криптовалюты';
+    modalTitle.textContent = MODAL_BUY_TITLE;
     form.classList.add('modal-buy');
     form.classList.remove('modal-sell');
     walletContainer.style.order = '0';
   }
 
   if (status === 'buyer') {
-    modalTitle .textContent = 'Продажа криптовалюты';
+    modalTitle .textContent = MODAL_SELL_TITLE;
     form.classList.add('modal-sell');
     form.classList.remove('modal-buy');
     walletContainer.style.order = '-1';
@@ -43,28 +46,15 @@ const renderForm = (contractorData, userData) => {
   form.wallet.placeholder = (status === 'seller') ? userData.wallet.address : wallet.address;
 
   paymentMethodOptions.forEach((option) => {
-    let isNecessary;
-    if (status === 'buyer') {
-      isNecessary = userData.paymentMethods.some((method) => method.provider === option.value);
-    }
-    if (status === 'seller') {
-      isNecessary = paymentMethods.some((method) => method.provider === option.value);
-    }
-    if (!isNecessary) {
-      option.disabled = true;
-    }
+    const methods = (status === 'buyer') ? userData.paymentMethods : paymentMethods;
+    const isNecessary = methods.some((method) => method.provider === option.value);
+    option.disabled = !isNecessary;
   });
 
   onPaymentMethodChange = () => {
-    if (status === 'seller') {
-      const currentMethod = paymentMethods.find((method) => method.provider === form.paymentMethod.value);
-      form.accountNumber.placeholder = currentMethod.accountNumber ? currentMethod.accountNumber : '';
-    }
-
-    if (status === 'buyer') {
-      const currentMethod = userData.paymentMethods.find((method) => method.provider === form.paymentMethod.value);
-      form.accountNumber.placeholder = currentMethod.accountNumber ? currentMethod.accountNumber : '';
-    }
+    const methods = (status === 'buyer') ? userData.paymentMethods : paymentMethods;
+    const currentMethod = methods.find((method) => method.provider === form.paymentMethod.value);
+    form.accountNumber.placeholder = currentMethod.accountNumber ? currentMethod.accountNumber : '';
   };
 
   form.paymentMethod.addEventListener('change', onPaymentMethodChange);
