@@ -2,6 +2,8 @@ import { openModal } from './modal.js';
 
 const MODAL_BUY_TITLE = 'Покупка криптовалюты';
 const MODAL_SELL_TITLE = 'Продажа криптовалюты';
+const RUB = 'RUB';
+const KEKS = 'KEKS';
 
 const form = document.querySelector('.modal-form');
 const paymentMethodOptions = form.querySelectorAll('.select-paymentMethod option');
@@ -41,8 +43,8 @@ const renderForm = (contractorData, userData) => {
   form.type.value = (status === 'seller') ? 'BUY' : 'SELL';
   form.contractorId.value = id;
   form.exchangeRate.value = exchangeRate;
-  form.sendingCurrency.value = (status === 'seller') ? 'RUB' : 'KEKS';
-  form.receivingCurrency.value = (status === 'seller') ? 'KEKS' : 'RUB';
+  form.sendingCurrency.value = (status === 'seller') ? RUB : KEKS;
+  form.receivingCurrency.value = (status === 'seller') ? KEKS : RUB;
   form.wallet.placeholder = (status === 'seller') ? userData.wallet.address : wallet.address;
 
   paymentMethodOptions.forEach((option) => {

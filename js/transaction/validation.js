@@ -2,6 +2,8 @@ import '../../pristine/pristine.min.js';
 
 const PASSWORD = 180712;
 const PAYMENT_METHOD_HEADER = 'Выберите платёжную систему';
+const RUB = 'RUB';
+const KEKS = 'KEKS';
 
 const messages = {
   paymentMethod: 'Платежная система не выбрана',
@@ -17,8 +19,8 @@ const successMessage = form.querySelector('.modal__validation-message--success')
 
 const getMaxRublesAmount = (status, balance, exchangeRate, userBalances) => {
   const getMaxUserBalances = (currency) => userBalances.find((item) => item.currency === currency);
-  const maxUserKeksBalances = getMaxUserBalances('KEKS');
-  const maxUserRublesBalances = getMaxUserBalances('RUB');
+  const maxUserKeksBalances = getMaxUserBalances(KEKS);
+  const maxUserRublesBalances = getMaxUserBalances(RUB);
   const maxUserRublesAmount = maxUserKeksBalances.amount * exchangeRate;
   if (status === 'buyer') {
     return Math.min(balance.amount, maxUserRublesAmount);
