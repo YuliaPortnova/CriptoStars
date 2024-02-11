@@ -1,6 +1,6 @@
 import { initContractorsData } from './contractors-data/index.js';
 import { request, renderDataError } from './api/index.js';
-import { initTransaction, setSubmitDisabled, showMessage, resetTransaction } from './transaction/index.js';
+import { initTransaction, setSubmitDisabled, showErrorMessage, showSuccessMessage, resetTransaction } from './transaction/index.js';
 import { renderUserData } from './user-data/index.js';
 
 const BASE_URL = 'https://cryptostar.grading.htmlacademy.pro/';
@@ -26,9 +26,9 @@ document.addEventListener('formdata', async (event) => {
     setSubmitDisabled(true);
     await request(BASE_URL, {method: 'post', body: event.formData});
     resetTransaction();
-    showMessage('success');
+    showSuccessMessage();
   } catch (error) {
-    showMessage('error');
+    showErrorMessage();
   } finally {
     setSubmitDisabled(false);
   }

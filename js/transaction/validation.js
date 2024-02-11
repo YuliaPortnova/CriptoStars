@@ -12,6 +12,8 @@ const form = document.querySelector('.modal-form');
 const exchangeAllButton = form.querySelector('.btn--exchange-all');
 const rublesAmount = form.querySelector('#rubles-amount');
 const keksAmount = form.querySelector('#keks-amount');
+const errorMessage = form.querySelector('.modal__validation-message--error');
+const successMessage = form.querySelector('.modal__validation-message--success');
 
 const getMaxRublesAmount = (status, balance, exchangeRate, userBalances) => {
   const getMaxUserBalances = (currency) => userBalances.find((item) => item.currency === currency);
@@ -121,14 +123,18 @@ const checkValidity = () => pristine.validate();
 const resetValidity = () => pristine.destroy();
 
 const hideMessages = () => {
-  form.querySelector('.modal__validation-message--error').style.display = 'none';
-  form.querySelector('.modal__validation-message--success').style.display = 'none';
+  errorMessage.style.display = 'none';
+  successMessage.style.display = 'none';
 };
 
-const showMessage = (status) => {
-  hideMessages();
-  const message = form.querySelector(`.modal__validation-message--${status}`);
-  message.style.display = 'flex';
+const showErrorMessage = () => {
+  successMessage.style.display = 'none';
+  errorMessage.style.display = 'flex';
 };
 
-export { initValidation, checkValidity, resetValidity, showMessage, hideMessages };
+const showSuccessMessage = () => {
+  errorMessage.style.display = 'none';
+  successMessage.style.display = 'flex';
+};
+
+export { initValidation, checkValidity, resetValidity, showErrorMessage, showSuccessMessage, hideMessages };

@@ -1,5 +1,5 @@
 import { renderForm, closeForm } from './form.js';
-import { initValidation, checkValidity, resetValidity, showMessage, hideMessages } from './validation.js';
+import { initValidation, checkValidity, resetValidity, showErrorMessage, showSuccessMessage, hideMessages } from './validation.js';
 
 const form = document.querySelector('.modal-form');
 const closeButton = document.querySelector('.modal__close-btn');
@@ -41,4 +41,4 @@ const setSubmitDisabled = (flag) => {
   submitButton.textContent = flag ? 'Обменять...' : 'Обменять!';
 };
 
-export { initTransaction, setSubmitDisabled, showMessage, resetTransaction };
+export { initTransaction, setSubmitDisabled, showErrorMessage, showSuccessMessage, resetTransaction };
