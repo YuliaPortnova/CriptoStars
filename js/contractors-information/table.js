@@ -1,10 +1,6 @@
 const container = document.querySelector('.users-list__table-body');
 const template = document.querySelector('#user-table-row__template');
 
-const createContractorClickHandler = (properties) => () => {
-  document.dispatchEvent(new CustomEvent('contractorSelect', {detail: properties}));
-};
-
 const createRows = (contractorsData) => contractorsData.map((properties) => {
   const tableRow = template.content.querySelector('.users-list__table-row').cloneNode(true);
   const paymentMethodItems = tableRow.querySelectorAll('.users-list__badges-item');
@@ -34,7 +30,9 @@ const createRows = (contractorsData) => contractorsData.map((properties) => {
     }
   });
 
-  openButton.addEventListener ('click', createContractorClickHandler(properties));
+  openButton.addEventListener ('click', () => {
+    document.dispatchEvent(new CustomEvent('contractorSelect', {detail: properties}));
+  });
   return tableRow;
 });
 
