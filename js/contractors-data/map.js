@@ -9,15 +9,17 @@ const startCoordinate = {
   lng: 30.31127,
 };
 
+const container = document.querySelector('.container--map');
+const pinSrc = container.querySelector('.map__pin').src;
+const pinVerifiedSrc = container.querySelector('.map__pin-verified').src;
+
 const iconConfig = {
-  url: {notVerified: '../img/pin.svg', verified: '../img/pin-verified.svg'},
+  url: {notVerified: pinSrc, verified: pinVerifiedSrc},
   width: 36,
   height: 46,
   anchorX: 18,
   anchorY: 46,
 };
-
-const container = document.querySelector('.container--map');
 
 const map = L.map('map').setView(startCoordinate, ZOOM);
 
